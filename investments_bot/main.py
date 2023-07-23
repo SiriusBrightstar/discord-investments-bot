@@ -1,5 +1,12 @@
+"""
+Portfolio Bot
+
+File            : main.py
+Created Date    : 23 July 2023
+Version         : v0.0.1
+"""
+
 import logging
-from datetime import datetime
 
 from discord import Embed
 from discord import Client
@@ -28,30 +35,36 @@ tree = app_commands.CommandTree(client)
 
 
 @tree.command(name="about", description="About this Bot")
-async def aboutBot(interaction):
-    log.info(f"About requested by {interaction.user.name}")
-    # await interaction.response.send_message(f"The id of the user that invoked this command is {interaction.user.id}")
-    embedTitle = 'Portfolio Bot'
-    embedDescription = (f'Open Source Portfolio Tracker & Paper Trading Bot'
+async def about_bot(interaction):
+    """
+    Sends an embed of this Bot's details
+    """
+    log.info("About requested by %s", interaction.user.name)
+    # f"The id of the user that invoked this command is {interaction.user.id}"
+    embed_title = 'Portfolio Bot'
+    embed_escription = (f'Open Source Portfolio Tracker & Paper Trading Bot'
                         '\n'
                         f'Thanks for using it {interaction.user.name}❤️'
-    )
-    embedUrl = 'https://github.com/SiriusBrightstar/discord-investments-bot'
-    aboutEmbed = Embed(
-        title=embedTitle,
-        url=embedUrl,
-        description=embedDescription,
+                        )
+    embed_url = 'https://github.com/SiriusBrightstar/discord-investments-bot'
+    about_embed = Embed(
+        title=embed_title,
+        url=embed_url,
+        description=embed_escription,
         color=0x000000
     )
-    await interaction.response.send_message(embed=aboutEmbed)
+    await interaction.response.send_message(embed=about_embed)
 
 
 @client.event
 async def on_ready():
+    """
+    Runs when Ready
+    """
     await tree.sync()
     await client.change_presence(activity=Activity(type=ActivityType.watching,
                                                    name="Your Trades"),
                                  status=Status.online)
-    log.info(f'Bot has logged in as {client.user}')
+    log.info("Bot has logged in as %s", client.user)
 
 client.run(envData['DISCORD_TOKEN'])
